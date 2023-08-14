@@ -4,9 +4,7 @@ import {
 } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { ErrorPage } from "./pages/ErrorPage";
-import { Login, Cadastro } from "./pages/Login";
-import { Ficha } from "./pages/Fichas";
-import { Mesas } from "./pages/Mesas";
+import { CharacterSheet } from "./pages/ficha";
 
 
 const router = createBrowserRouter([
@@ -16,23 +14,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "/home",
+    element: <Home />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/cadastro",
-    element: <Cadastro />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/fichas",
-    element: <Ficha />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/sessoes",
-    element: <Mesas />,
+    path: "/sheet",
+    element: <CharacterSheet />,
     errorElement: <ErrorPage />,
   },
 ]);
