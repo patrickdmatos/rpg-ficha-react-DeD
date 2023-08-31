@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { ErrorPage } from "./pages/ErrorPage";
-import { CharacterSheet } from "./pages/ficha";
+import { HomeSheet, CharacterSheet } from "./pages/ficha";
 
 
 const router = createBrowserRouter([
@@ -20,6 +20,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/sheet",
+    element: <HomeSheet />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/sheet/NewCharacter-sheet",
     element: <CharacterSheet />,
     errorElement: <ErrorPage />,
   },

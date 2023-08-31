@@ -1,4 +1,22 @@
+import { Link } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    Input,
+    Button,
+    Typography,
+    Tabs,
+    TabsHeader,
+    TabsBody,
+    Tab,
+    TabPanel,
+    Select,
+    Option,
+    Textarea,
+} from "@material-tailwind/react";
+import React from "react";
 
 
 const DndRaces = [
@@ -43,60 +61,106 @@ const DndAlignments = [
     // Adicione mais alinhamentos conforme necessário
 ];
 
+export const HomeSheet = () => {
+    return (
+        <div className="h-screen w-screen text-white bg-sky-800 font-medievalsharp">
+            <NavBar />
+            <div className="h-full w-full p-2">
+                <Link to={'/sheet/NewCharacter-sheet'}>
+                    <button className="w-64 h-12 rounded-xl bg-sky-600 hover:bg-sky-500 hover:text-amber-600 hover:text-lg duration-200">
+                        Novo Personagem
+                    </button>
+                </Link>
+            </div >
+        </div >
+    )
+}
 
 export const CharacterSheet = () => {
+    const [type, setType] = React.useState("pessoal");
     return (
-        <div className="h-screen w-screen bg-slate-300 font-medievalsharp">
+        <div className="h-screen w-screen text-white bg-sky-800 font-medievalsharp">
             <NavBar />
-            <div className="flex w-[110.5rem] h-[56.4rem] rounded-lg mx-2 bg-slate-800">
-                <div className="m-2">
-                    <label className="block text-sm font-medium">Nome do personagem</label>
-                    <input
-                        type="text"
-                        className="w-full py-2 px-3 bg-slate-600 dark:bg-slate-800 text-white rounded-lg"
-                        placeholder="Insira o Nome do personagem"
-                    />
-                    <label className="block text-sm font-medium">Classe</label>
-                    <select
-                        className="w-full py-2 px-3 dark:bg-slate-800 bg-slate-600 text-white rounded-lg"
-                        defaultValue="Select a class"
-                    >
-                        <option selected hidden>Selecione uma Classe</option>
-                        {DndClasses.map((dndClass, index) => (
-                            <option key={index} value={dndClass}>
-                                {dndClass}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            <Card className="w-full max-w-[72rem] mx-auto">
+                <CardBody className="h-max">
+                    <Tabs value={type} className="overflow-visible">
+                        <TabsHeader className="relative z-0 ">
+                            <Tab value="pessoal" onClick={() => setType("pessoal")}>
+                                Pessoais
+                            </Tab>
+                            <Tab value="caracteres" onClick={() => setType("caracteres")}>
+                                Carcteristicas
+                            </Tab>
+                            <Tab value="invetario" onClick={() => setType("invetario")}>
+                                Inventario
+                            </Tab>
+                        </TabsHeader>
+                        <TabsBody className="!overflow-x-hidden !overflow-y-hidden h-max"
+                            animate={{
+                                initial: {
+                                    x: type === "pessoal" ? 400 : -400,
+                                },
+                                mount: {
+                                    x: 0,
+                                },
+                                unmount: {
+                                    x: type === "pessoal" ? 400 : -400,
+                                },
+                            }}
+                        >
+                            <TabPanel value="pessoal" className="p-0 w-[99%] !overflow-y-visible">
+                                <form className="mt-12 flex flex-col gap-4">
+                                    <div className="w-full flex gap-4">
+                                        <Select variant="standard" label="Select Version" className="!overflow-y-visible">
+                                            {DndClasses.map((dndClass, index) => (
+                                                <Option key={index} value={dndClass}>
+                                                    {dndClass}
+                                                </Option>))}
+                                        </Select>
+                                    </div>
+                                    <div className="w-full flex gap-4">
+                                        <Input label="Nome" variant="standard" />
+                                        <Input label="Level" variant="standard" type="number" className="w-[6rem]"/>
+                                        <Input label="Idade" variant="standard" type="number" className="w-[6rem]"/>
+                                        <Input label="Altura" variant="standard" type="number" className="w-[6rem]"/>
+                                    </div>
+                                    <div className="w-full flex gap-4">
+                                        <Select variant="standard" label="Select Version" className="!overflow-y-visible">
+                                            {DndRaces.map((dndRace, index) => (
+                                                <Option key={index} value={dndRace}>
+                                                    {dndRace}
+                                                </Option>))}
+                                        </Select>
+                                    </div>
+                                    <div className="w-full flex gap-4">
+                                        <Select variant="standard" label="Select Version" className="!overflow-y-visible">
+                                            {DndAlignments.map((alinhamentos, index) => (
+                                                <Option key={index} value={alinhamentos}>
+                                                    {alinhamentos}
+                                                </Option>))}
+                                        </Select>
+                                    </div>
+                                    <div className="w-full flex gap-4">
+                                       <Textarea label="Historia"/>
+                                    </div>
+                                </form>
+                            </TabPanel>
+                            <TabPanel value="caracteres" className="p-0">
+                                <form className="mt-12 flex flex-col gap-4">
+                                    <Input label="abacate" variant="standard" />
 
-                <div className="m-2">
-                    <label className="block text-sm font-medium">Raça</label>
-                    <select
-                        className="w-full py-2 px-3 dark:bg-slate-800 bg-slate-600 text-white rounded-lg"
-                        defaultValue="Selecione uma Raça"
-                    >
-                        <option selected hidden>Selecione uma Raça</option>
-                        {DndRaces.map((race, index) => (
-                            <option key={index} value={race}>
-                                {race}
-                            </option>
-                        ))}
-                    </select>
-                    <label className="block text-sm font-medium">Alinhamento</label>
-                    <select
-                        className="w-full py-2 px-3 dark:bg-slate-800 bg-slate-600 text-white rounded-lg"
-                        defaultValue="Selecione um alinhamento"
-                    >
-                        <option selected hidden>Selecione um Alinhamento</option>
-                        {DndAlignments.map((alignment, index) => (
-                            <option key={index} value={alignment}>
-                                {alignment}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
+                                </form>
+                            </TabPanel>
+                            <TabPanel value="invetario" className="p-0">
+                                <form className="mt-12 flex flex-col gap-4">
+                                    <Input label="abacate" variant="standard" />
+
+                                </form>
+                            </TabPanel>
+                        </TabsBody>
+                    </Tabs>
+                </CardBody>
+            </Card>
         </div>
     )
 }
