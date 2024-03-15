@@ -2,38 +2,25 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { ErrorPage } from "./pages/ErrorPage";
-import { HomeSheet, CharacterSheet } from "./pages/ficha";
-
+ import { Home } from "./pages/public/home";
+// import { PublicLayout } from "./pages/layouts/publicLayout";
+import { MasterLayout } from "./pages/layouts/masterLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/sheet",
-    element: <HomeSheet />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/sheet/NewCharacter-sheet",
-    element: <CharacterSheet />,
-    errorElement: <ErrorPage />,
-  },
+    element: <MasterLayout />,
+    children: [
+      {
+        path: 'home',
+        element: <Home />
+      }
+    ]
+  }
 ]);
 
 function App() {
-  return (
-    <RouterProvider router={router} />
-  )
+  return (<RouterProvider router={router} />)
 }
 
 export default App
