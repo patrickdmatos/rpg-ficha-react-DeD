@@ -1,19 +1,13 @@
-import { Box, Heading, Text, Button } from '@chakra-ui/react';
-import { Link, Outlet } from 'react-router-dom';
-import { DrawerCreateCharacter } from '../../playerPages/create';
-
+import { Box, Heading, Text } from '@chakra-ui/react';
 const Home = () => {
     return (
         <>
-        <Box textAlign="center" py="20">
-            <Heading as="h1" size="xl" mb="6">Bem-vindo à Taberna da Cadela Prenha!</Heading>
-            <Text fontSize="lg" mb="8">Aqui você pode se preparar para todos os perigos e aventuras que podem aparecer no vasto mundo de Dungeons & Dragons.</Text>
+            <Box textAlign="center" py="20" bgColor={'gray.300'} h={'100vh'} color={'yellow.600'}>
+                <Heading as="h1" size="xl" mb="6">Bem-vindo à Taberna da Cadela Prenha!</Heading>
+                <Text fontSize="lg" fontWeight={600}>Essa é a base da Guilda do Doguinho Caramelo.</Text>
+                <Text fontSize="lg" fontWeight={600} mb="8">Aqui você pode registrar suas aventuras e conseguir informações valiosas.</Text>
 
-            <Box display="flex" justifyContent="center">
-                <DrawerCreateCharacter />
-                <Button as={Link} to="/biblioteca-personagem" variant="outline" colorScheme="blue" size="lg">Gerenciar Personagens</Button>
             </Box>
-        </Box>
             {/* <footer>
                 <div className="footer-container">
                     <div className="footer-section">
@@ -39,7 +33,6 @@ const Home = () => {
                     <p>© 2022 Your Company. All rights reserved.</p>
                 </div>
             </footer> */}
-        <Outlet />
         </>
     );
 }

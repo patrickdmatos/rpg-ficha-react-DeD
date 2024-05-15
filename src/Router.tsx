@@ -1,17 +1,23 @@
-import Home from "./pages/layouts/basic/home";
 import { createBrowserRouter } from "react-router-dom";
 import NaoLocalizado404 from "./pages/errorsPages/error";
-import { BibliotecaPersonagens } from "./pages/playerPages/mangerCaracters";
+import Layout from "./pages/Layout/baseLayout";
+import Home from "./pages/Home/home";
+import Bestiario from "./pages/Bestiario/bestiario";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
-        errorElement: <NaoLocalizado404 />
-    },
-    {
-        path: "/biblioteca-personagem",
-        element: <BibliotecaPersonagens />,
+        element: <Layout />,
+        children: [
+            {
+                path: "",
+                element: <Home />,
+            },
+            {
+                path: "/bestiary",
+                element: <Bestiario />,
+            },
+        ],
         errorElement: <NaoLocalizado404 />
     },
 ])
