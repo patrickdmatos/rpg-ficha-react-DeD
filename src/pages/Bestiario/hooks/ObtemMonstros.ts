@@ -1,5 +1,3 @@
-// hooks/ObtemMonstros.ts
-
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { urlBase } from "../../../ServerConfig";
@@ -118,7 +116,7 @@ interface IMonstrosInfos {
 }
 
 export const useObtemArrayMonstros = () => {
-    return useQuery<{ Tiny: IMonstrosInfos[], Small: IMonstrosInfos[], Medium: IMonstrosInfos[], Large: IMonstrosInfos[], Huge: IMonstrosInfos[], Gargantuan: IMonstrosInfos[] }, Error>('monstros', async () => {
+    const fetchMonstros = async () => {
         const listaMonstros = await axios.get<IMonstros>(`${urlBase}/api/monsters`);
         const arrayMonstrosPorTamanho: { Tiny: IMonstrosInfos[], Small: IMonstrosInfos[], Medium: IMonstrosInfos[], Large: IMonstrosInfos[], Huge: IMonstrosInfos[], Gargantuan: IMonstrosInfos[] } = { Tiny: [], Small: [], Medium: [], Large: [], Huge: [], Gargantuan: [] };
 
@@ -148,6 +146,13 @@ export const useObtemArrayMonstros = () => {
                     break;
             }
         }
+
         return arrayMonstrosPorTamanho;
+    };
+
+    return useQuery('monstros', fetchMonstros, {
+        staleTime: 1000 * 60 * 10, // 10 minutes
+        cacheTime: 1000 * 60 * 60, // 60 minutes
+        refetchOnWindowFocus: false,
     });
 };
