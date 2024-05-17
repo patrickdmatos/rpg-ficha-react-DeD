@@ -117,17 +117,23 @@ interface IMonstrosInfos {
     image: string;
     url: string;
 }
-
-export const ObtemArrayMonstros = () => {
+export const useObtemArrayMonstros = () => {
     return useQuery<IMonstros[], Error>('monstros', async () => {
-        const response = await axios.get(`${urlBase}/api/monsters`);
-        return response.data.results;
+        const listaMonstros = await axios.get(`${urlBase}/api/monsters`);
+        const arrayMonstrosPorTamanho: { Tiny: IMonstrosInfos[], Small: IMonstrosInfos[], Medium: IMonstrosInfos[], Large: IMonstrosInfos[], Huge: IMonstrosInfos[], Gargantuan: IMonstrosInfos[] } = { Tiny: [], Small: [], Medium: [], Large: [], Huge: [], Gargantuan: [] }
+
+        for (let i = 334; i < listaMonstros.data.count; i++) {
+            console.log('index', i , listaMonstros.data.results[i].index);
+            
+            const response: { data: IMonstrosInfos } = await axios.get(`${urlBase}${listaMonstros.data.results[i].url}`);
+            if (response.data.size === 'Tiny') arrayMonstrosPorTamanho.Tiny.push(response.data)
+            if (response.data.size === 'Small') arrayMonstrosPorTamanho.Small.push(response.data)
+            if (response.data.size === 'Medium') arrayMonstrosPorTamanho.Medium.push(response.data)
+            if (response.data.size === 'Large') arrayMonstrosPorTamanho.Large.push(response.data)
+            if (response.data.size === 'Huge') arrayMonstrosPorTamanho.Huge.push(response.data)
+            if (response.data.size === 'Gargantuan') arrayMonstrosPorTamanho.Gargantuan.push(response.data)
+        }
+
+        return arrayMonstrosPorTamanho;
     });
 };
-
-export const InfosMonstro = (monstroURL: string) => {
-    return useQuery<IMonstrosInfos, Error>(['monstro', monstroURL], async () => {
-        const response = await axios.get(`${urlBase}${monstroURL}`);
-        return response.data;
-    });
-}

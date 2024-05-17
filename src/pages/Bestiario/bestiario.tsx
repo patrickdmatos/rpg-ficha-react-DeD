@@ -1,69 +1,26 @@
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Card, Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import { ObtemArrayMonstros, InfosMonstro } from "./hooks/ObtemMonstros";
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Card, Divider, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import { useObtemArrayMonstros } from "./hooks/ObtemMonstros";
 import { ReactElement } from "react";
 
 interface IMonstros {
-    map(arg0: (monstro: IMonstros) => import("react/jsx-runtime").JSX.Element): unknown;
-    name: string;
     index: string;
+    name: string;
     url: string;
 }
 
-
-
 const Bestiario = (): JSX.Element => {
-    const { data, error, isLoading } = ObtemArrayMonstros();
+    const { data, error, isLoading } = useObtemArrayMonstros();
+    const arrayTamanhosMonstros = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'];
 
-    const renderMonstros = (monstros: IMonstros) => {
-
-        return (
-            monstros.map((monstro: IMonstros): ReactElement<JSX.Element> => {
-                const { data: monstrosInfos } = InfosMonstro(monstro.url);
-
-                if (!monstrosInfos) {
-                    console.log('Monstro não encontrado');
-                }
-
-                const tamanhosDesejados = ['Huge', 'Large', 'Medium'];
-
-                return (
-                    <Accordion allowToggle key={monstro.index}>
-                        {tamanhosDesejados.map((tamanho: string) => (
-                            <AccordionItem key={tamanho}>
-                                {({ isExpanded }) => (
-                                    <>
-                                        <h2>
-                                            <AccordionButton>
-                                                <Box as='span' flex='1' textAlign='left'>
-                                                    <Heading fontSize={16}>
-                                                        {tamanho}
-                                                    </Heading>
-                                                </Box>
-                                                {isExpanded ? 'MENOS' : 'MAIS'}
-                                            </AccordionButton>
-                                        </h2>
-                                        <AccordionPanel pb={4}>
-                                            {monstrosInfos && monstrosInfos?.size.includes(tamanho) ? (
-                                                <Card mb={4} p={4} bgColor={'gray.700'} color={'yellow.400'}>
-                                                    <Heading as="h2" size="lg" mb={4}>{monstrosInfos.name}</Heading>
-                                                    <Text fontSize="md" mb={2}>Tamanho: {monstrosInfos.size}</Text>
-                                                    <Text fontSize="md" mb={2}>Tipo: {monstrosInfos.type}</Text>
-                                                    <Text fontSize="md" mb={2}>Alineamento: {monstrosInfos.alignment}</Text>
-                                                </Card>
-                                            ) : (
-                                                'Não há monstros nesse tamanho.'
-                                            )}
-                                        </AccordionPanel>
-                                    </>
-                                )}
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
-                );
-            })
-
-        );
-    };
+    const renderMonstroCard = (monstroInfo: any): ReactElement<JSX.Element> => (
+        <Card key={monstroInfo.index} mb={4} p={4} bgColor={'gray.700'} color={'yellow.400'}>
+            <Heading as="h2" size="lg" mb={4}>{monstroInfo.name}</Heading>
+            <Divider mb={2} />
+            <Text fontSize="md" mb={2}>Tipo: {monstroInfo.type}</Text>
+            <Text fontSize="md" mb={2}>Alinhamento: {monstroInfo.alignment}</Text>
+            {monstroInfo.languages ? <Text fontSize="md" mb={2}>Idiomas: {monstroInfo.languages}</Text> : ''}
+        </Card>
+    );
 
     return (
         <>
@@ -72,9 +29,38 @@ const Bestiario = (): JSX.Element => {
                 <Text fontSize="lg" fontWeight={600}>Essa é a base da Guilda do Doguinho Caramelo.</Text>
                 <Text fontSize="lg" fontWeight={600} mb="8">Aqui você pode registrar suas aventuras e conseguir informações valiosas.</Text>
 
-                {isLoading && <p>Carregando...</p>}
-                {error && <p>Ocorreu um erro ao carregar os monstros</p>}
-                {data && renderMonstros(data as IMonstros)}
+                <Accordion w={'74%'} allowToggle>
+                    {arrayTamanhosMonstros.map((tamanho: string, key) => (
+                        <AccordionItem bg={'gray.600'} key={key}>
+                            {({ isExpanded }) => (
+                                <>
+                                    <h2>
+                                        <AccordionButton fontSize={26}>
+                                            <Box as='span' flex='1' textAlign='left'>
+                                                <Heading fontSize={20}>
+                                                    Tamanho: {tamanho}
+                                                </Heading>
+                                            </Box>
+                                            {isExpanded ? '+' : '-'}
+                                        </AccordionButton>
+                                    </h2>
+                                    <AccordionPanel bg={'gray.600'} pb={4}>
+                                        <Grid templateColumns="repeat(5, 1fr)" maxH={'20rem'} overflowY={'auto'} gap={4}>
+                                            {isLoading && <p>Carregando...</p>}
+                                            {error && <p>Ocorreu um erro ao carregar os monstros</p>}
+                                            {data && (<Text>
+                                                {data.filter((monstro: IMonstros) => monstro.name === tamanho).map((monstro: IMonstros) => {
+                                                    const monstroInfo = data.find((monstroInfo) => monstroInfo.index === monstro.index);
+                                                    return renderMonstroCard(monstroInfo);
+                                                })}
+                                            </Text>)}
+                                        </Grid>
+                                    </AccordionPanel>
+                                </>
+                            )}
+                        </AccordionItem>
+                    ))}
+                </Accordion>
             </Flex >
         </>
     );
