@@ -2,14 +2,8 @@ import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Card, D
 import { useObtemArrayMonstros } from "./hooks/ObtemMonstros";
 import { ReactElement } from "react";
 
-interface IMonstros {
-    index: string;
-    name: string;
-    url: string;
-}
-
 const Bestiario = (): JSX.Element => {
-    const { data, error, isLoading } = useObtemArrayMonstros();
+    const { data, error, isLoading } = JSON.parse(localStorage.getItem('arrayMonstros'))  | useObtemArrayMonstros();
     const arrayTamanhosMonstros = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'];
 
     const renderMonstroCard = (monstroInfo: any): ReactElement<JSX.Element> => (
@@ -30,8 +24,8 @@ const Bestiario = (): JSX.Element => {
                 <Text fontSize="lg" fontWeight={600} mb="8">Aqui você pode registrar suas aventuras e conseguir informações valiosas.</Text>
 
                 <Accordion w={'74%'} allowToggle>
-                    {arrayTamanhosMonstros.map((tamanho: string, key) => (
-                        <AccordionItem bg={'gray.600'} key={key}>
+                    {arrayTamanhosMonstros.map((tamanho) => (
+                        <AccordionItem bg={'gray.600'} key={tamanho}>
                             {({ isExpanded }) => (
                                 <>
                                     <h2>
@@ -41,19 +35,14 @@ const Bestiario = (): JSX.Element => {
                                                     Tamanho: {tamanho}
                                                 </Heading>
                                             </Box>
-                                            {isExpanded ? '+' : '-'}
+                                            {isExpanded ? '-' : '+'}
                                         </AccordionButton>
                                     </h2>
                                     <AccordionPanel bg={'gray.600'} pb={4}>
                                         <Grid templateColumns="repeat(5, 1fr)" maxH={'20rem'} overflowY={'auto'} gap={4}>
                                             {isLoading && <p>Carregando...</p>}
                                             {error && <p>Ocorreu um erro ao carregar os monstros</p>}
-                                            {data && (<Text>
-                                                {data.filter((monstro: IMonstros) => monstro.name === tamanho).map((monstro: IMonstros) => {
-                                                    const monstroInfo = data.find((monstroInfo) => monstroInfo.index === monstro.index);
-                                                    return renderMonstroCard(monstroInfo);
-                                                })}
-                                            </Text>)}
+                                            {data && data[tamanho].map(monstro => renderMonstroCard(monstro))}
                                         </Grid>
                                     </AccordionPanel>
                                 </>

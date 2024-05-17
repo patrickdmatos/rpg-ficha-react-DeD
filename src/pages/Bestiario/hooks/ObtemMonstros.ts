@@ -6,9 +6,8 @@ import { urlBase } from "../../../ServerConfig";
 
 interface IMonstros {
     count: number
-    results: []
+    results: { index: string; url: string; }[];
 }
-
 
 interface IArmorClass {
     type: string;
@@ -17,7 +16,7 @@ interface IArmorClass {
 
 interface ISpeed {
     walk: string;
-    swim: string;
+    swim?: string;
 }
 
 interface IProficiency {
@@ -92,7 +91,7 @@ interface IMonstrosInfos {
     damage_immunities: string[];
     condition_immunities: string[];
     senses: {
-        darkvision: string;
+        darkvision?: string;
         passive_perception: number;
     };
     languages: string;
@@ -117,23 +116,38 @@ interface IMonstrosInfos {
     image: string;
     url: string;
 }
+
 export const useObtemArrayMonstros = () => {
-    return useQuery<IMonstros[], Error>('monstros', async () => {
-        const listaMonstros = await axios.get(`${urlBase}/api/monsters`);
-        const arrayMonstrosPorTamanho: { Tiny: IMonstrosInfos[], Small: IMonstrosInfos[], Medium: IMonstrosInfos[], Large: IMonstrosInfos[], Huge: IMonstrosInfos[], Gargantuan: IMonstrosInfos[] } = { Tiny: [], Small: [], Medium: [], Large: [], Huge: [], Gargantuan: [] }
+    return useQuery<{ Tiny: IMonstrosInfos[], Small: IMonstrosInfos[], Medium: IMonstrosInfos[], Large: IMonstrosInfos[], Huge: IMonstrosInfos[], Gargantuan: IMonstrosInfos[] }, Error>('monstros', async () => {
+        const listaMonstros = await axios.get<IMonstros>(`${urlBase}/api/monsters`);
+        const arrayMonstrosPorTamanho: { Tiny: IMonstrosInfos[], Small: IMonstrosInfos[], Medium: IMonstrosInfos[], Large: IMonstrosInfos[], Huge: IMonstrosInfos[], Gargantuan: IMonstrosInfos[] } = { Tiny: [], Small: [], Medium: [], Large: [], Huge: [], Gargantuan: [] };
 
-        for (let i = 334; i < listaMonstros.data.count; i++) {
-            console.log('index', i , listaMonstros.data.results[i].index);
-            
-            const response: { data: IMonstrosInfos } = await axios.get(`${urlBase}${listaMonstros.data.results[i].url}`);
-            if (response.data.size === 'Tiny') arrayMonstrosPorTamanho.Tiny.push(response.data)
-            if (response.data.size === 'Small') arrayMonstrosPorTamanho.Small.push(response.data)
-            if (response.data.size === 'Medium') arrayMonstrosPorTamanho.Medium.push(response.data)
-            if (response.data.size === 'Large') arrayMonstrosPorTamanho.Large.push(response.data)
-            if (response.data.size === 'Huge') arrayMonstrosPorTamanho.Huge.push(response.data)
-            if (response.data.size === 'Gargantuan') arrayMonstrosPorTamanho.Gargantuan.push(response.data)
+        for (let i = 0; i < listaMonstros.data.results.length; i++) {
+            const response = await axios.get<IMonstrosInfos>(`${urlBase}${listaMonstros.data.results[i].url}`);
+
+            switch (response.data.size) {
+                case 'Tiny':
+                    arrayMonstrosPorTamanho.Tiny.push(response.data);
+                    break;
+                case 'Small':
+                    arrayMonstrosPorTamanho.Small.push(response.data);
+                    break;
+                case 'Medium':
+                    arrayMonstrosPorTamanho.Medium.push(response.data);
+                    break;
+                case 'Large':
+                    arrayMonstrosPorTamanho.Large.push(response.data);
+                    break;
+                case 'Huge':
+                    arrayMonstrosPorTamanho.Huge.push(response.data);
+                    break;
+                case 'Gargantuan':
+                    arrayMonstrosPorTamanho.Gargantuan.push(response.data);
+                    break;
+                default:
+                    break;
+            }
         }
-
         return arrayMonstrosPorTamanho;
     });
 };
