@@ -8,7 +8,7 @@ import { TbDog } from 'react-icons/tb';
 import BtnColorMode from './btnColorMode';
 
 const Sidebar = () => {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
     const { colorMode } = useColorMode();
 
     const toggleSidebar = () => {
