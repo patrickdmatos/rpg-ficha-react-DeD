@@ -1,8 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import NaoLocalizado404 from "./pages/errorsPages/error";
-import Layout from "./pages/Layout/baseLayout";
-import Home from "./pages/Home/home";
-import Bestiario from "./pages/Bestiario/bestiario";
+import {Home} from "./pages/Home/home.tsx";
+import {CharactersLib}  from "./pages/characters/charactersLib.tsx";
+import Layout from "./pages/layout/layout.tsx";
 
 const router = createBrowserRouter([
     {
@@ -14,11 +13,10 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: "/bestiary",
-                element: <Bestiario />,
+                path: "characters",
+                element: <CharactersLib />,
             },
         ],
-        errorElement: <NaoLocalizado404 />
     },
 ])
 
