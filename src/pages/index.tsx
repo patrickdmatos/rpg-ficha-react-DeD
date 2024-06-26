@@ -70,7 +70,6 @@ export default function Home() {
 
     setCharacterData({
       ...characterData,
-      // weapons: [...characterData.weapons, newItem]
     });
 
     // Limpa os campos de input após adicionar o item
@@ -91,7 +90,6 @@ export default function Home() {
 
     setCharacterData({
       ...characterData,
-      // skills: [...skills, newSkill]
     });
 
     // Limpa os campos de input após adicionar a habilidade
