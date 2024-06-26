@@ -84,7 +84,7 @@ export default function Home() {
 
     setCharacterData({
       ...characterData,
-      weapons: [...characterData.weapons, newItem]
+      // weapons: [...characterData.weapons, newItem]
     });
 
     // Limpa os campos de input após adicionar o item
@@ -105,7 +105,7 @@ export default function Home() {
 
     setCharacterData({
       ...characterData,
-      skills: [...characterData.skills, newSkill]
+      // skills: [...characterData.skills, newSkill]
     });
 
     // Limpa os campos de input após adicionar a habilidade
@@ -157,7 +157,7 @@ export default function Home() {
               className="mt-2 text-gray-900 font-semibold"
               type="text"
               name="height" // Substitua com o nome apropriado
-              value={characterData.height} // Substitua com o valor apropriado
+              value={'characterData.height'} // Substitua com o valor apropriado
             />
           </div>
           <div>
@@ -167,7 +167,7 @@ export default function Home() {
               className="mt-1 text-gray-900 font-semibold"
               type="text"
               name="age" // Substitua com o nome apropriado
-              value={characterData.age} // Substitua com o valor apropriado
+              value={'characterData.age'} // Substitua com o valor apropriado
             />
           </div>
           <div>
@@ -265,7 +265,7 @@ export default function Home() {
                   {characterData.weapons.map((item, index) => (
                     <tr key={index} className="bg-gray-700 text-gray-100">
                       <td className="p-2">{item.name}</td>
-                      <td className="p-2">{item.description}</td>
+                      <td className="p-2">{'item.description'}</td>
                     </tr>
                   ))}
                   <tr className="bg-gray-700 text-gray-100">
